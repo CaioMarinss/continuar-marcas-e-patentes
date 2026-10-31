@@ -1,0 +1,39 @@
+<section id="protecao" class="protection" aria-labelledby="protecao-title">
+  <app-section-heading
+    appReveal
+    layout="split"
+    eyebrow="Por que registrar"
+    title="Proteção para o presente. Segurança para o futuro."
+    titleId="protecao-title"
+  >
+    O registro protege a identidade da marca e cria uma base mais segura para o negócio crescer,
+    ganhar valor e ampliar sua presença.
+  </app-section-heading>
+
+  <!-- Pinned scene: vertical scroll moves the benefits sideways. Static grid without ScrollProgress. -->
+  <div class="rail-scene" appScrollProgress="pin">
+    <div class="rail-scene__pin">
+      <ul class="benefits">
+        @for (benefit of benefits; track benefit.title; let i = $index) {
+          <li class="benefit" appSpotlight>
+            <div class="benefit__top">
+              <span class="benefit__icon"><app-icon [name]="benefit.icon" [size]="28" /></span>
+              <span class="benefit__number" aria-hidden="true">{{
+                (i + 1).toString().padStart(2, '0')
+              }}</span>
+            </div>
+            <h3>{{ benefit.title }}</h3>
+            <p>{{ benefit.text }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="validity" appScrollProgress="view">
+    <div class="validity__inner">
+      <span class="validity__number">10</span>
+      <p>anos de validade do registro de marca, com possibilidade de renovação.</p>
+    </div>
+  </div>
+</section>

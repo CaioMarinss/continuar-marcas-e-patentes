@@ -1,0 +1,53 @@
+<section id="conteudos" class="contents" aria-labelledby="conteudos-title">
+  <div class="top">
+    <app-section-heading
+      appReveal
+      eyebrow="Conteúdo e orientação"
+      title="Marcas, identidade e proteção em pauta"
+      titleId="conteudos-title"
+    >
+      Vídeos reais do acervo da Continuar, com participações, eventos e orientações sobre o universo das marcas.
+    </app-section-heading>
+
+    <div class="controls">
+      <button type="button" aria-label="Vídeos anteriores" (click)="scroll(-1)">
+        <app-icon name="arrow-left" [size]="20" />
+      </button>
+      <button type="button" aria-label="Próximos vídeos" (click)="scroll(1)">
+        <app-icon name="arrow-right" [size]="20" />
+      </button>
+    </div>
+  </div>
+
+  <ul #rail class="rail" tabindex="0" aria-label="Vídeos">
+    @for (video of videos; track video.src) {
+      <li class="item">
+        <figure>
+          <!-- Videos are heavy (up to 16 MB): the player is only created when it scrolls near the viewport,
+               and then loads metadata only until the visitor presses play. -->
+          @defer (on viewport) {
+            <video
+              class="media"
+              controls
+              playsinline
+              preload="metadata"
+              [src]="video.src + '#t=0.1'"
+              (play)="onPlay($event)"
+            ></video>
+          } @placeholder {
+            <div class="media media--placeholder"></div>
+          }
+          <figcaption class="caption">{{ video.caption }}</figcaption>
+        </figure>
+      </li>
+    }
+  </ul>
+
+  <div class="footer-link">
+    <a [href]="instagramUrl" target="_blank" rel="noopener">
+      <app-icon name="instagram" [size]="18" />
+      Acompanhe {{ instagramHandle }}
+      <app-icon name="arrow-up-right" [size]="16" />
+    </a>
+  </div>
+</section>

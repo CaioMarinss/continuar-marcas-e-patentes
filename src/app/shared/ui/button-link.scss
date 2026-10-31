@@ -1,0 +1,53 @@
+:host {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 50px;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+:host(.btn--gold) {
+  background: linear-gradient(135deg, #e3c99a, var(--gold));
+  color: #1a1408;
+  box-shadow: 0 10px 30px -10px rgb(201 165 106 / 0.65);
+
+  &:hover {
+    box-shadow: 0 16px 40px -12px rgb(201 165 106 / 0.85);
+  }
+}
+
+// Secondary: glass outline on the dark scheme.
+:host(.btn--ink) {
+  background: rgb(255 255 255 / 0.06);
+  border-color: var(--glass-stroke);
+  color: var(--on-dark);
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(12px);
+  }
+
+  &:hover {
+    border-color: var(--glass-stroke-gold);
+    background: rgb(255 255 255 / 0.1);
+  }
+}

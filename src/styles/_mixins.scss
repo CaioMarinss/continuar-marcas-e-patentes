@@ -1,0 +1,66 @@
+// Breakpoints (mobile-first)
+$breakpoints: (
+  sm: 600px,
+  md: 900px,
+  lg: 1200px,
+);
+
+@mixin up($bp) {
+  @media (min-width: map-get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@mixin eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+
+  &::before {
+    content: '';
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+  }
+}
+
+// Frosted glass surface. Hairline border + top highlight; blur only where supported.
+@mixin glass($radius: var(--radius-lg)) {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-stroke);
+  border-radius: $radius;
+  box-shadow: var(--glass-shadow);
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+
+// Section color scopes: components read --section-* instead of raw palette tokens.
+@mixin tone-dark {
+  --section-bg: transparent;
+  --section-fg: var(--on-dark);
+  --section-muted: var(--on-dark-muted);
+  --section-accent: var(--gold);
+  --section-line: var(--line-dark);
+  --focus-color: var(--gold);
+  background: var(--section-bg);
+  color: var(--section-fg);
+}

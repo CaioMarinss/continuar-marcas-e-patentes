@@ -1,0 +1,68 @@
+@use 'mixins' as *;
+
+.contact {
+  @include tone-dark;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - var(--header-h));
+  padding-block: var(--section-y);
+  overflow: hidden;
+  text-align: center;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-position: 50% 20%;
+  background-size: cover;
+  opacity: 0.35;
+
+  // Dark veil keeps the text contrast (WCAG) over the photograph.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgb(14 13 11 / 0.55), rgb(14 13 11 / 0.92));
+  }
+
+  .is-scrolly & {
+    opacity: 0.6;
+    clip-path: circle(calc(6% + min(1, calc(var(--p) * 1.9)) * 70%) at 50% 50%);
+  }
+}
+
+.inner {
+  @include glass;
+  width: min(100% - 2 * var(--gutter), 46rem);
+  margin-inline: auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+  background: linear-gradient(145deg, rgb(28 25 21 / 0.6), rgb(18 16 13 / 0.4));
+}
+
+.eyebrow {
+  @include eyebrow;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-size: var(--fs-display);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.text {
+  max-width: 30rem;
+  margin: 1.75rem auto 2.75rem;
+  font-size: var(--fs-lead);
+  color: var(--section-muted);
+}
+
+.phone {
+  margin-top: 1.5rem;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  color: var(--section-muted);
+}

@@ -1,0 +1,33 @@
+<footer class="footer">
+  <div class="inner">
+    <div class="identity">
+      <img [ngSrc]="logo.src" [width]="logo.width" [height]="logo.height" [alt]="logo.alt" class="identity__logo" />
+      <p class="identity__name">Jaqueline Sousa</p>
+    </div>
+
+    <nav class="links" aria-label="Rodapé">
+      <ul>
+        @for (item of nav; track item.fragment) {
+          <li><a [href]="'#' + item.fragment">{{ item.label }}</a></li>
+        }
+      </ul>
+    </nav>
+
+    <ul class="contact">
+      <li>
+        <a [href]="instagramUrl" target="_blank" rel="noopener">
+          <app-icon name="instagram" [size]="18" />
+          {{ instagramHandle }}
+        </a>
+      </li>
+      <li>
+        <a [href]="whatsapp" target="_blank" rel="noopener">
+          <app-icon name="whatsapp" [size]="18" />
+          {{ whatsappDisplay }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <p class="copy">© {{ year }} Continuar Marcas e Patentes</p>
+</footer>

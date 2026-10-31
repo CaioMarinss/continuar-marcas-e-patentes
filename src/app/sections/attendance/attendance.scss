@@ -1,0 +1,58 @@
+@use 'mixins' as *;
+
+.attendance {
+  @include tone-dark;
+  padding-block: var(--section-y);
+}
+
+.inner {
+  @include glass;
+  width: min(100% - 2 * var(--gutter), calc(var(--container) - 2 * var(--gutter)));
+  margin-inline: auto;
+  display: grid;
+  gap: 2.5rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  overflow: hidden;
+
+  @include up(md) {
+    grid-template-columns: 1fr 0.85fr;
+    align-items: center;
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+}
+
+.copy {
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+
+.eyebrow {
+  @include eyebrow;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+.text {
+  max-width: 30rem;
+  margin: 1.75rem 0 2.5rem;
+  font-size: var(--fs-lead);
+  color: var(--section-muted);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border-radius: calc(var(--radius-lg) - 0.5rem);
+}
+
+// Photo opens from a narrow vertical slit and settles as it reaches the middle of the viewport.
+img.is-scrolly {
+  --open: min(1, calc(var(--p) * 2.2));
+  clip-path: inset(0 calc((1 - var(--open)) * 30%));
+  transform: scale(calc(1.15 - var(--open) * 0.15));
+}

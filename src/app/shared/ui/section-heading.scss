@@ -1,0 +1,55 @@
+@use 'mixins' as *;
+
+:host {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.heading {
+  max-width: 46rem;
+}
+
+.eyebrow {
+  @include eyebrow;
+  margin-bottom: 1.1rem;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+.lead {
+  max-width: 38rem;
+  font-size: var(--fs-lead);
+  color: var(--section-muted);
+
+  &:empty {
+    display: none;
+  }
+}
+
+:host(.is-center) {
+  margin-inline: auto;
+  text-align: center;
+
+  .heading,
+  .lead {
+    margin-inline: auto;
+  }
+}
+
+:host(.is-split) {
+  .heading {
+    max-width: none;
+  }
+
+  @include up(md) {
+    grid-template-columns: 1.15fr 1fr;
+    align-items: end;
+    gap: 4rem;
+
+    .lead {
+      padding-bottom: 0.4rem;
+    }
+  }
+}

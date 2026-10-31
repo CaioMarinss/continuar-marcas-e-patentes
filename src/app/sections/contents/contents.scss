@@ -1,0 +1,109 @@
+@use 'mixins' as *;
+
+.contents {
+  @include tone-dark;
+  padding-block: var(--section-y);
+}
+
+.top {
+  @include container;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--glass-stroke);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.05);
+    color: var(--section-fg);
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+
+    &:hover {
+      border-color: var(--section-accent);
+      color: var(--section-accent);
+    }
+  }
+}
+
+// Horizontal rail aligned with the container on the left, bleeding to the right edge.
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(200px, 62vw, 270px);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  padding: 0 var(--gutter) 1.25rem max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-deep) transparent;
+}
+
+.item {
+  scroll-snap-align: start;
+
+  figure {
+    margin: 0;
+  }
+}
+
+.media {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: var(--graphite);
+  border: 1px solid var(--glass-stroke);
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  box-shadow: var(--glass-shadow);
+
+  &--placeholder {
+    display: block;
+  }
+}
+
+.caption {
+  margin-top: 0.9rem;
+  padding-inline: 0.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+}
+
+.footer-link {
+  @include container;
+  margin-top: 2rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--on-dark);
+    border: 1px solid var(--glass-stroke);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.05);
+    transition: border-color var(--dur) var(--ease);
+
+    &:hover {
+      border-color: var(--glass-stroke-gold);
+    }
+  }
+}

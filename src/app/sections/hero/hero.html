@@ -1,0 +1,39 @@
+<section class="hero" appScrollProgress="exit" aria-labelledby="hero-title">
+  <div class="inner">
+    <div class="copy">
+      <p class="eyebrow">Jaqueline Sousa · Continuar Marcas e Patentes</p>
+      <h1 id="hero-title">
+        <span class="line">Sua marca carrega uma história.</span>
+        <em class="line">Ela merece continuar.</em>
+      </h1>
+      <p class="lead">
+        Registro de marca com visão humana, posicionamento e proteção para quem constrói um negócio
+        com identidade e propósito.
+      </p>
+      <div class="actions">
+        <a appButton variant="gold" [href]="whatsapp" target="_blank" rel="noopener">
+          <app-icon name="whatsapp" [size]="18" />
+          Quero proteger minha marca
+        </a>
+        <a class="text-link" href="#sobre">
+          Conheça a trajetória
+          <app-icon name="arrow-down" [size]="16" />
+        </a>
+      </div>
+    </div>
+
+    <figure class="portrait">
+      <img
+        [ngSrc]="portrait.src"
+        [width]="portrait.width"
+        [height]="portrait.height"
+        [alt]="portrait.alt"
+        priority
+      />
+      <figcaption class="note">
+        <strong>+20 anos</strong>
+        <span>protegendo sonhos, histórias e a coragem de empreender</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>

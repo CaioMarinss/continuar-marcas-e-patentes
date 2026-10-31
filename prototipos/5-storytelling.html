@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Protótipo 5 · Storytelling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..600;1,400..600&family=Inter:wght@300..600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0e0d0b;
+    --gold: #b8955a;
+    --gold-soft: #d8bd8c;
+    --ivory: #f7f3ec;
+    --cream: #efe8dc;
+    --text: #2b2826;
+    --muted: #6b645c;
+    --on-dark: #f3ede3;
+    --on-dark-muted: #a9a094;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); background: var(--ivory); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; margin: 0; line-height: 1.04; font-variant-numeric: lining-nums; }
+  p { margin: 0; }
+  img { display: block; max-width: 100%; }
+  .eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+
+  /* progress bar */
+  .progress { position: fixed; inset: 0 0 auto; height: 2px; z-index: 50; background: var(--gold); transform-origin: left; transform: scaleX(0); }
+  .chapter { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 14px; mix-blend-mode: difference; }
+  .chapter span { width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: 0.35; transition: opacity 0.3s, transform 0.3s; }
+  .chapter span.on { opacity: 1; transform: scale(1.6); }
+
+  /* 1. Opening */
+  .open { height: 100svh; position: relative; display: grid; place-items: center; text-align: center; background: var(--ink); color: var(--on-dark); overflow: hidden; }
+  .open img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; opacity: 0.22; filter: grayscale(0.4); will-change: transform; }
+  .open::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgb(14 13 11 / 0.55), rgb(14 13 11 / 0.9)); }
+  .open .inner { position: relative; z-index: 1; padding: 0 24px; }
+  .open h1 { font-size: clamp(3.2rem, 1.5rem + 7vw, 8rem); letter-spacing: -0.02em; margin-top: 18px; }
+  .open p.sub { color: var(--on-dark-muted); margin-top: 18px; }
+  .cue { z-index: 1; position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-muted); }
+
+  /* 2. Words light up (sticky) */
+  .words { height: 260vh; background: var(--ink); }
+  .words .pin { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; padding: 0 24px; }
+  .words h2 { font-size: clamp(2.4rem, 1.2rem + 5vw, 6rem); max-width: 1100px; color: var(--on-dark); text-align: center; }
+  .words .w { opacity: 0.14; transition: opacity 0.25s, color 0.25s; }
+  .words .w.lit { opacity: 1; }
+  .words .w.gold.lit { color: var(--gold-soft); font-style: italic; }
+
+  /* 3. Pinned photo + questions */
+  .ask { display: grid; grid-template-columns: 1fr 1fr; background: var(--ivory); }
+  .ask .media { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .ask .media img { width: 100%; height: 100%; object-fit: cover; object-position: top; transform: scale(var(--s, 1.15)); clip-path: inset(var(--c, 12%) round 4px); transition: clip-path 0.1s linear; }
+  .ask .steps { padding: 0 clamp(24px, 6vw, 96px); }
+  .ask .step { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; opacity: 0.18; transition: opacity 0.5s; }
+  .ask .step.on { opacity: 1; }
+  .ask .step .k { font-family: var(--serif); font-size: 1.1rem; color: var(--gold); }
+  .ask .step h3 { font-size: clamp(2rem, 1.3rem + 2.6vw, 3.6rem); margin-top: 14px; }
+  .ask .step p { color: var(--muted); margin-top: 18px; max-width: 420px; }
+
+  /* 4. Horizontal benefits */
+  .hscroll { height: 340vh; background: var(--cream); }
+  .hscroll .pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+  .hscroll .title { padding: 0 clamp(24px, 6vw, 96px); margin-bottom: 40px; display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+  .hscroll .title h2 { font-size: clamp(2.2rem, 1.4rem + 2.8vw, 4rem); max-width: 700px; }
+  .hscroll .count { font-family: var(--serif); font-size: 1.4rem; color: var(--gold); white-space: nowrap; }
+  .track { display: flex; gap: 28px; padding: 0 clamp(24px, 6vw, 96px); will-change: transform; }
+  .panel { flex: 0 0 min(78vw, 460px); height: min(52svh, 420px); background: var(--ivory); padding: 40px 36px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgb(43 40 38 / 0.1); }
+  .panel .n { font-family: var(--serif); font-size: 5rem; line-height: 0.8; color: var(--gold); opacity: 0.85; }
+  .panel h3 { font-size: 2rem; margin-bottom: 12px; }
+  .panel p { color: var(--muted); }
+  .panel.photo { padding: 0; border: 0; overflow: hidden; }
+  .panel.photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* 5. Counter */
+  .ten { height: 200vh; background: var(--ink); color: var(--on-dark); }
+  .ten .pin { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; text-align: center; overflow: hidden; }
+  .ten .big { font-family: var(--serif); font-size: clamp(12rem, 40vw, 34rem); line-height: 0.8; background: linear-gradient(180deg, #f3dcab, var(--gold) 60%, #6e5128); -webkit-background-clip: text; background-clip: text; color: transparent; transform: scale(var(--k, 0.6)); }
+  .ten p { font-family: var(--serif); font-size: clamp(1.4rem, 1rem + 1.6vw, 2.4rem); max-width: 640px; margin: 10px auto 0; padding: 0 24px; opacity: var(--o, 0); transform: translateY(calc((1 - var(--o, 0)) * 20px)); }
+
+  /* 6. Finale — circle reveal */
+  .finale { height: 220vh; background: var(--ink); }
+  .finale .pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .finale .circle { position: absolute; inset: 0; clip-path: circle(var(--r, 8%) at 50% 50%); }
+  .finale .circle img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: brightness(0.55); }
+  .finale .copy { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--on-dark); padding: 0 24px; opacity: var(--o, 0); }
+  .finale h2 { font-size: clamp(3rem, 1.4rem + 6.5vw, 7.5rem); }
+  .finale h2 em { color: var(--gold-soft); }
+  .btn { display: inline-block; margin-top: 30px; padding: 15px 30px; background: var(--gold); color: #17120a; text-decoration: none; font: 500 0.9rem var(--sans); letter-spacing: 0.04em; }
+  .btn:hover { background: var(--gold-soft); }
+
+  footer { background: var(--ink); color: var(--on-dark-muted); text-align: center; font-size: 0.8rem; padding: 40px 0 60px; }
+  .proto-tag { position: fixed; left: 16px; bottom: 16px; z-index: 60; font-size: 0.72rem; padding: 8px 14px; border-radius: 999px; background: rgb(14 13 11 / 0.7); color: #ddd; text-decoration: none; backdrop-filter: blur(8px); }
+
+  @media (max-width: 800px) {
+    .ask { grid-template-columns: 1fr; }
+    .ask .media { height: 55svh; z-index: 0; }
+    .ask .steps { position: relative; z-index: 1; background: linear-gradient(transparent, var(--ivory) 12%); }
+    .ask .step { min-height: 70svh; }
+    .chapter { display: none; }
+    .hscroll .title { flex-direction: column; align-items: start; }
+  }
+
+  /* Reduced motion: plain, static, fully readable page */
+  .static .words, .static .hscroll, .static .ten, .static .finale { height: auto; }
+  .static .pin { position: static; height: auto; padding-block: 96px; }
+  .static .words .w { opacity: 1; }
+  .static .track { flex-wrap: wrap; }
+  .static .ten .big { transform: none; }
+  .static .ten p, .static .finale .copy { opacity: 1; transform: none; }
+  .static .finale .pin { height: 100svh; }
+  .static .finale .circle { clip-path: none; }
+  .static .ask .step { opacity: 1; }
+  .static .ask .media img { clip-path: none; transform: none; }
+</style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="chapter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+  <main>
+    <section class="open" data-ch="0" aria-labelledby="t">
+      <img class="para" src="../public/images/jaqueline-em-pe.webp" alt="" />
+      <div class="inner">
+        <p class="eyebrow">Jaqueline Sousa · Continuar Marcas e Patentes</p>
+        <h1 id="t">Toda marca<br />começa com um nome.</h1>
+        <p class="sub">+20 anos protegendo sonhos, histórias e a coragem de empreender.</p>
+      </div>
+      <span class="cue">Role para continuar ↓</span>
+    </section>
+
+    <section class="words" data-ch="1" aria-label="Manifesto">
+      <div class="pin">
+        <h2 id="manifesto">Sua marca carrega uma história. Registrar é honrar quem você é, o que construiu e o legado que deixará. <span class="g">Ela merece continuar.</span></h2>
+      </div>
+    </section>
+
+    <section class="ask" data-ch="2" aria-label="Perguntas sobre identidade">
+      <div class="media"><img src="../public/images/jaqueline-escritorio.webp" alt="Jaqueline Sousa em atendimento na Continuar" /></div>
+      <div class="steps">
+        <div class="step"><span class="k">01</span><h3>O que levou você a criar esse nome?</h3><p>Antes do registro, existe uma história. É por ela que a conversa começa.</p></div>
+        <div class="step"><span class="k">02</span><h3>Sua identidade pessoal está refletida na sua marca?</h3><p>Posicionamento e proteção caminham juntos.</p></div>
+        <div class="step"><span class="k">03</span><h3>A imagem da sua marca comunica seu verdadeiro propósito?</h3><p>Uma marca registrada é uma marca que pode crescer com segurança.</p></div>
+      </div>
+    </section>
+
+    <section class="hscroll" data-ch="3" aria-labelledby="p">
+      <div class="pin">
+        <div class="title">
+          <h2 id="p">Proteção para o presente. Segurança para o futuro.</h2>
+          <span class="count"><span id="cnum">01</span> / 04</span>
+        </div>
+        <div class="track">
+          <article class="panel"><span class="n">01</span><div><h3>Exclusividade nacional de uso</h3><p>Proteção para usar a marca no território nacional dentro da atividade registrada.</p></div></article>
+          <article class="panel"><span class="n">02</span><div><h3>Proteção jurídica real</h3><p>Um instrumento para defender a identidade construída pelo seu negócio.</p></div></article>
+          <article class="panel photo"><img src="../public/images/jaqueline-palestra.webp" alt="Jaqueline apresentando conteúdo sobre garantias de uma marca registrada" /></article>
+          <article class="panel"><span class="n">03</span><div><h3>Valor agregado ao negócio</h3><p>A marca registrada pode ser licenciada ou vendida como um ativo.</p></div></article>
+          <article class="panel"><span class="n">04</span><div><h3>Segurança para expandir</h3><p>Uma estrutura mais segura para crescer, escalar ou franquear.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ten" data-ch="4" aria-label="Validade do registro">
+      <div class="pin">
+        <div>
+          <div class="big" id="tenNum">10</div>
+          <p>anos de validade do registro de marca, com possibilidade de renovação.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="finale" data-ch="5" aria-labelledby="f">
+      <div class="pin">
+        <div class="circle"><img src="../public/images/jaqueline-retrato.webp" alt="" /></div>
+        <div class="copy">
+          <div>
+            <h2 id="f">Sua história<br /><em>merece continuar.</em></h2>
+            <a class="btn" href="#">Quero proteger minha marca</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>Protótipo · Direção 5 — Storytelling com rolagem</footer>
+  <a class="proto-tag" href="index.html">← protótipos</a>
+
+<script>
+  // Split manifesto into words (gold for the closing sentence)
+  const h = document.getElementById('manifesto');
+  const gold = h.querySelector('.g').textContent;
+  const base = h.textContent.replace(gold, '').trim();
+  h.setAttribute('aria-label', h.textContent);
+  h.innerHTML = [...base.split(' ').map((w) => `<span class="w" aria-hidden="true">${w}</span>`),
+                 ...gold.split(' ').map((w) => `<span class="w gold" aria-hidden="true">${w}</span>`)].join(' ');
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('static');
+  } else {
+    const $ = (s) => document.querySelector(s);
+    const clamp = (v) => Math.min(Math.max(v, 0), 1);
+    // progress of a tall section while its sticky child is pinned (0 → 1)
+    const prog = (el) => { const r = el.getBoundingClientRect(); return clamp(-r.top / (r.height - innerHeight)); };
+
+    const words = [...document.querySelectorAll('.words .w')];
+    const steps = [...document.querySelectorAll('.ask .step')];
+    const track = $('.track'), cnum = $('#cnum');
+    const sections = [...document.querySelectorAll('[data-ch]')];
+    const dots = [...document.querySelectorAll('.chapter span')];
+
+    const frame = () => {
+      const vh = innerHeight;
+      // global progress + chapter dots
+      $('.progress').style.transform = `scaleX(${scrollY / (document.documentElement.scrollHeight - vh)})`;
+      let ch = 0; sections.forEach((s, i) => { if (s.getBoundingClientRect().top < vh * 0.5) ch = i; });
+      dots.forEach((d, i) => d.classList.toggle('on', i === ch));
+
+      // 1. parallax
+      $('.open .para').style.transform = `translateY(${scrollY * 0.35}px) scale(${1 + scrollY / vh * 0.08})`;
+
+      // 2. words
+      const pw = prog($('.words'));
+      const lit = Math.floor(pw * 1.15 * words.length);
+      words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+
+      // 3. pinned photo opens up, active question
+      const ask = $('.ask'), ra = ask.getBoundingClientRect();
+      const pa = clamp(-ra.top / (ra.height - vh));
+      const img = $('.ask .media img');
+      img.style.setProperty('--c', `${(1 - clamp(pa * 4)) * 12}%`);
+      img.style.setProperty('--s', 1.15 - pa * 0.15);
+      steps.forEach((s) => { const r = s.getBoundingClientRect(); s.classList.toggle('on', r.top < vh * 0.6 && r.bottom > vh * 0.4); });
+
+      // 4. horizontal scroll
+      const ph = prog($('.hscroll'));
+      const max = track.scrollWidth - innerWidth;
+      track.style.transform = `translateX(${-ph * max}px)`;
+      cnum.textContent = String(Math.min(4, Math.floor(ph * 4) + 1)).padStart(2, '0');
+
+      // 5. counter 0 → 10, scale up
+      const pt = prog($('.ten'));
+      const ten = $('.ten');
+      $('#tenNum').textContent = Math.round(clamp(pt * 1.6) * 10);
+      ten.style.setProperty('--k', 0.6 + clamp(pt * 1.6) * 0.4);
+      ten.style.setProperty('--o', clamp((pt - 0.45) * 3));
+
+      // 6. circle reveal
+      const pf = prog($('.finale'));
+      const fin = $('.finale');
+      fin.style.setProperty('--r', `${8 + clamp(pf * 1.5) * 70}%`);
+      fin.style.setProperty('--o', clamp((pf - 0.5) * 3));
+    };
+    let queued = false;
+    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; frame(); }); } };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    frame();
+  }
+</script>
+</body>
+</html>

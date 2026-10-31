@@ -1,0 +1,74 @@
+@use 'mixins' as *;
+
+.presence {
+  @include tone-dark;
+  padding-block: var(--section-y);
+}
+
+app-section-heading,
+.gallery {
+  @include container;
+}
+
+// Bento grid: mixed tile sizes instead of a uniform gallery.
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: clamp(9rem, 22vw, 15rem);
+  grid-auto-flow: dense;
+  gap: clamp(0.6rem, 1.5vw, 1rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  margin-bottom: 0;
+  list-style: none;
+
+  @include up(md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  li {
+    overflow: hidden;
+    border: 1px solid var(--glass-stroke);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+
+    &:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    &:nth-child(4),
+    &:nth-child(5) {
+      grid-row: span 2;
+    }
+
+    // closes the last row of the bento (2 columns on mobile, 4 on desktop)
+    &:nth-child(6) {
+      grid-column: span 2;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    transition: transform 700ms var(--ease);
+  }
+
+  li:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.manifesto {
+  width: min(100% - 2 * var(--gutter), 820px);
+  margin: clamp(4rem, 8vw, 6rem) auto 0;
+  padding: clamp(0.6rem, 1.5vw, 0.9rem);
+  @include glass;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius-lg) - 0.4rem);
+  }
+}

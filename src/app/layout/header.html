@@ -1,0 +1,44 @@
+<header class="header" appScrollProgress="page" [class.is-open]="menuOpen()">
+  <div class="bar">
+    <a class="brand" href="#topo" (click)="close()">
+      <img
+        [ngSrc]="logo.src"
+        [width]="logo.width"
+        [height]="logo.height"
+        alt=""
+        class="brand__logo"
+      />
+      <span class="brand__text">
+        <span class="brand__name">Jaqueline Sousa</span>
+        <span class="brand__company">Continuar Marcas e Patentes</span>
+      </span>
+    </a>
+
+    <button
+      #toggleButton
+      type="button"
+      class="toggle"
+      aria-controls="menu-principal"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="toggle()"
+    >
+      <span class="toggle__lines" aria-hidden="true"></span>
+      <span class="visually-hidden">{{ menuOpen() ? 'Fechar menu' : 'Abrir menu' }}</span>
+    </button>
+
+    <nav id="menu-principal" class="nav" aria-label="Navegação principal">
+      <ul class="nav__list">
+        @for (item of nav; track item.fragment) {
+          <li>
+            <a class="nav__link" [href]="'#' + item.fragment" (click)="close()">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+      <a appButton variant="gold" class="nav__cta" [href]="whatsapp" target="_blank" rel="noopener">
+        <app-icon name="whatsapp" [size]="18" />
+        Falar com Jaqueline
+      </a>
+    </nav>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+</header>

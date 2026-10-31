@@ -1,0 +1,92 @@
+@use 'mixins' as *;
+
+.questions {
+  @include tone-dark;
+  padding-block: var(--section-y);
+}
+
+.inner {
+  @include container;
+  display: grid;
+  gap: clamp(3rem, 6vw, 4.5rem);
+
+  @include up(md) {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+}
+
+// The heading stays in place while the questions scroll past it.
+.aside {
+  @include up(md) {
+    position: sticky;
+    top: calc(var(--header-h) + 50svh - 6rem);
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--section-line);
+
+    &:last-child {
+      border-bottom: 1px solid var(--section-line);
+    }
+
+    @include up(md) {
+      grid-template-columns: 5rem 1fr;
+      padding-block: 2.25rem;
+    }
+  }
+
+  // Storytelling: each question takes the stage on its own and fades as it leaves.
+  li.is-scrolly {
+    align-items: center;
+    min-height: 42svh;
+    border: 0;
+    // tent curve on --p: dim → full in the middle of the viewport → dim
+    opacity: clamp(0.15, min(calc(var(--p) * 4 - 0.8), calc(3.2 - var(--p) * 4)), 1);
+    transform: translateY(calc((0.5 - var(--p)) * 3rem));
+
+    @include up(md) {
+      min-height: 60svh;
+    }
+  }
+}
+
+.number {
+  @include glass(50%);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--gold-soft);
+  box-shadow: none;
+
+  @include up(md) {
+    width: 3.75rem;
+    height: 3.75rem;
+    font-size: 1.35rem;
+  }
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  font-weight: 400;
+
+  .is-scrolly & {
+    font-size: clamp(1.9rem, 1.3rem + 2.2vw, 3.2rem);
+    line-height: 1.12;
+  }
+}

@@ -1,0 +1,53 @@
+<section id="sobre" class="about" aria-labelledby="sobre-title">
+  <div class="manifesto" appScrollProgress="pin" [style.--n]="wordCount">
+    <div class="manifesto__pin">
+      <div class="statement">
+        <p class="eyebrow">Continuar é proteger</p>
+        <!-- Words light up one by one while the scene is pinned; screen readers get the plain sentence. -->
+        <blockquote>
+          <p>
+            <span class="visually-hidden">{{ quote }}</span>
+            <span aria-hidden="true">
+              @for (word of quoteWords; track $index) {
+                <span class="word" [style.--i]="$index">{{ word + ' ' }}</span>
+              }
+            </span>
+          </p>
+        </blockquote>
+        <p class="statement__text">
+          <span class="visually-hidden">{{ text }}</span>
+          <span aria-hidden="true">
+            @for (word of textWords; track $index) {
+              <span class="word" [style.--i]="quoteWords.length + $index">{{ word + ' ' }}</span>
+            }
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="split">
+    <figure class="photo" appScrollProgress="view">
+      <img [ngSrc]="photo.src" [width]="photo.width" [height]="photo.height" [alt]="photo.alt" />
+      <figcaption>Visão humana. Proteção estratégica.</figcaption>
+    </figure>
+
+    <div class="copy" appReveal>
+      <p class="eyebrow">Quem está por trás da Continuar</p>
+      <h2 id="sobre-title">Estratégia com escuta, experiência e propósito</h2>
+      <p class="intro">
+        Jaqueline Sousa é fundadora da Continuar Marcas e Patentes e especialista em Propriedade
+        Industrial e Intelectual.
+      </p>
+      <p>
+        Há mais de 20 anos, acompanha histórias e negócios que precisam proteger aquilo que os torna
+        únicos. Sua atuação une olhar estratégico e atendimento próximo para que marcas possam
+        começar, crescer e se tornar referência com segurança.
+      </p>
+      <p class="signature">
+        Jaqueline Sousa
+        <span>Atendimento direto comigo</span>
+      </p>
+    </div>
+  </div>
+</section>

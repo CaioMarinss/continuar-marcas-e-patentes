@@ -1,0 +1,202 @@
+@use 'mixins' as *;
+
+.hero {
+  @include tone-dark;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: calc(var(--nav-space) + 1rem) clamp(4rem, 3rem + 5vw, 6rem);
+}
+
+.inner {
+  @include container;
+  display: grid;
+  gap: clamp(3.5rem, 6vw, 5rem);
+
+  @include up(md) {
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+// Eyebrow as a small glass pill
+.eyebrow {
+  @include eyebrow;
+  @include glass(999px);
+  margin-bottom: 2rem;
+  padding: 0.55rem 1rem;
+  box-shadow: none;
+}
+
+h1 {
+  font-size: clamp(2.9rem, 1.6rem + 4.4vw, 5.6rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+
+  // em.line (not em) so the shimmer outranks the generic .line entrance rule below
+  em.line {
+    display: block;
+    margin-top: 0.1em;
+    font-style: italic;
+    color: var(--gold-soft);
+
+    // slow gold shimmer across the second line
+    @supports (background-clip: text) {
+      background: linear-gradient(100deg, var(--gold-soft), var(--gold) 40%, #f7e6c4 50%, var(--gold) 60%, var(--gold-soft));
+      background-size: 250% 100%;
+      background-clip: text;
+      color: transparent;
+      animation:
+        rise 1s var(--ease) 150ms both,
+        shimmer 7s ease-in-out 1.2s infinite;
+    }
+  }
+}
+
+@keyframes shimmer {
+  50% {
+    background-position: 100% 0;
+  }
+}
+
+.lead {
+  max-width: 34rem;
+  margin-top: 2rem;
+  font-size: var(--fs-lead);
+  font-weight: 300;
+  color: var(--section-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 2.75rem;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--on-dark);
+  transition: color var(--dur) var(--ease);
+
+  &:hover {
+    color: var(--gold-soft);
+  }
+}
+
+// Portrait inside a glass frame
+.portrait {
+  @include glass;
+  position: relative;
+  margin: 0 0 0 auto;
+  width: min(100%, 28rem);
+  padding: 0.75rem;
+
+  img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: 72svh;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 20%;
+    border-radius: calc(var(--radius-lg) - 0.5rem);
+  }
+}
+
+// "+20 anos" floating glass chip
+.note {
+  @include glass(var(--radius-md));
+  position: absolute;
+  left: -1rem;
+  bottom: 2rem;
+  display: grid;
+  gap: 0.3rem;
+  max-width: 15rem;
+  padding: 1.1rem 1.3rem;
+  background: linear-gradient(145deg, rgb(28 25 21 / 0.75), rgb(18 16 13 / 0.55));
+  animation: float 7s ease-in-out infinite;
+
+  @include up(md) {
+    left: -3.5rem;
+  }
+
+  strong {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--gold-soft);
+  }
+
+  span {
+    font-size: var(--fs-small);
+    color: var(--section-muted);
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// ---------- Storytelling motion ----------
+// Opening: lines rise in once (CSS only, so it also works on the prerendered HTML).
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+}
+
+@keyframes unveil {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+.eyebrow,
+.line,
+.lead,
+.actions {
+  animation: rise 1s var(--ease) both;
+}
+
+.line:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.lead {
+  animation-delay: 300ms;
+}
+
+.actions {
+  animation-delay: 420ms;
+}
+
+.portrait img {
+  animation: unveil 1.3s var(--ease) 200ms both;
+}
+
+// Leaving: copy drifts up and fades, portrait sinks slower (parallax). --p comes from ScrollProgress.
+.hero.is-scrolly {
+  .copy {
+    opacity: calc(1 - var(--p) * 1.4);
+    transform: translateY(calc(var(--p) * -4rem));
+  }
+
+  .portrait {
+    transform: translateY(calc(var(--p) * 6rem));
+  }
+}
